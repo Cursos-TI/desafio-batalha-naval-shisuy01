@@ -1,40 +1,101 @@
 #include <stdio.h>
 
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
+#define TAM 10
+#define NAVIO_TAM 3
+#define AGUA 0
+#define NAVIO 3
 
-int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
-
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
-
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
-
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
+int main(){
     
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
+    // ===========================
+    // 1. DECLARAÇÃO DO TABULEIRO
+    // ===========================
 
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
+    int tabuleiro[TAM][TAM];
 
-    return 0;
+    // inicializa todas as posições com água (0)
+    for (int i = 0; i < TAM; i++) {
+        for (int j = 0; j < TAM; j++) {
+            tabuleiro[i][j] = AGUA;
+        }
+    }
+
+    // ===================================
+    // 2. DECLARAÇÃO DOS NAVIOS (VETORES)
+    // ===================================
+    int navioHorizontal[NAVIO_TAM] = {NAVIO, NAVIO, NAVIO};
+    int navioVertical[NAVIO_TAM] = {NAVIO, NAVIO, NAVIO};
+
+    // Coordenadas iniciais (linha, coluna)
+    int linhaH = 2, colunaH = 3; // navio horizontal
+    int linhaV = 5, colunaV = 6; // navio vertical 
+
+    // ===================================
+    // 3. POSICIONAMENTO NAVIO HORIZONTAL
+    // ===================================
+    if (colunaH + NAVIO_TAM <= TAM) {
+        int podeColocar = 1;
+
+        // Verifica sobreposição 
+        for (int i = 0; i < NAVIO_TAM; i++) {
+            if (tabuleiro[linhaH][colunaH + i] != AGUA) {
+                podeColocar = 0;
+            }
+        }
+
+        // Coloca o navio no tabuleiro
+        if (podeColocar) {
+            for (int i = 0; i < NAVIO_TAM; i++) {
+                tabuleiro[linhaH][colunaH + i] = navioHorizontal[i];
+            }
+        }
+    }
+
+    // ==================================
+    // 4. POSICIONAMENTO NAVIO VERTICAL 
+    // ==================================
+    if (linhaV + NAVIO_TAM <= TAM) {
+        int podeColocar = 1;
+
+        // Verifica sobreposição
+        for (int i = 0; i < NAVIO_TAM; i++) {
+            if (tabuleiro[linhaV + i][colunaV] != AGUA) {
+                podeColocar = 0;
+            }
+        }
+
+        // coloca o navio no tabuleiro
+        if (podeColocar) {
+            for (int i = 0; i < NAVIO_TAM; i++) {
+                tabuleiro[linhaV + i][colunaV] = navioVertical[i];
+            }
+        }
+    }
+
+    // =========================
+    // 5. EXIBIÇÃO DO TABULEIRO 
+    // =========================
+
+    printf("\nTABULERIO BATALHA NAVAL\n\n");
+
+    // Cabeçalho com letras A-J
+    printf("   ");
+    for (char letra = 'A'; letra <= 'J'; letra++) {
+        printf("%c ", letra);
+    }
+     
+    printf("\n");
+
+    // Linhas numeradas de 1 a 10
+    for(int i = 0; i < TAM; i++) {
+        printf("%2d ", i + 1);
+
+        for (int j = 0; j < TAM; j++) {
+            printf("%d ", tabuleiro[i][j]);
+        } 
+        printf("\n");
+    } 
+
+  return 0;
+  
 }
