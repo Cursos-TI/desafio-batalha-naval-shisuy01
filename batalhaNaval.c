@@ -1,130 +1,71 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-/*
-========================================
- DEFINIÇÕES GERAIS (NÍVEL NOVATO)
-========================================
-*/
-#define TAM 10        // Tamanho do tabuleiro (10x10)
-#define NAVIO_TAM 3  // Tamanho fixo dos navios
-#define AGUA 0        // Representa água no tabuleiro
-#define NAVIO 3       // Representa parte de um navio
+#define TAM 10
 
 int main() {
+    int navios[TAM][TAM] = {0};
+    int habilidades[TAM][TAM] = {0};
 
-    /*
-    ========================================
-     1. DECLARAÇÃO DO TABULEIRO (NÍVEL NOVATO)
-    ========================================
-    */
-    int tabuleiro[TAM][TAM];
+    /* =========================
+       NÍVEL NOVATO - AVENTUREIRO – NAVIOS
+       ========================= */
 
-    /*
-    ========================================
-     2. INICIALIZAÇÃO DO TABULEIRO (NÍVEL NOVATO)
-     Preenche todas as posições com 0 (água)
-    ========================================
-    */
+    // Horizontal
+    navios[2][2] = navios[2][3] = navios[2][4] = 3;
+
+    // Vertical (mais abaixo para não embolar)
+    navios[4][7] = navios[5][7] = navios[6][7] = 3;
+
+    // Diagonal principal
+    navios[7][1] = navios[8][2] = navios[9][3] = 3;
+
+    // Diagonal secundária
+    navios[1][9] = navios[2][8] = navios[3][7] = 3;
+
+    /* =========================
+       NÍVEL MESTRE – HABILIDADES
+       DESENHOS FIXOS 5x5
+       ========================= */
+
+    // CONE (valor 3)
+    habilidades[0][4] = 3;
+    habilidades[1][3] = habilidades[1][4] = habilidades[1][5] = 3;
+    habilidades[2][2] = habilidades[2][3] = habilidades[2][4] = habilidades[2][5] = habilidades[2][6] = 3;
+
+    // OCTAEDRO (valor 5) — COMPLETO
+    habilidades[4][4] = 5;
+    habilidades[5][3] = habilidades[5][4] = habilidades[5][5] = 5;
+    habilidades[6][4] = 5;
+
+    // CRUZ (valor 2)
+    habilidades[6][1] = 2;
+    habilidades[7][0] = habilidades[7][1] = habilidades[7][2] = 2;
+    habilidades[8][1] = 2;
+    habilidades[9][1] = 2;
+
+    /* =========================
+       IMPRESSÃO
+       ========================= */
+
+    printf("\n TABULEIRO NAVIOS            TABULEIRO HABILIDADES\n", "");
+    printf("   A B C D E F G H I J         A B C D E F G H I J\n", "");
+
     for (int i = 0; i < TAM; i++) {
+        printf("%2d ", i + 1);
         for (int j = 0; j < TAM; j++) {
-            tabuleiro[i][j] = AGUA;
+            printf("%d ", navios[i][j]);
         }
-    }
 
-    /*
-    ========================================
-     3. DECLARAÇÃO DOS NAVIOS (NÍVEL NOVATO)
-     Navios representados por vetores 1D
-    ========================================
-    */
-    int navioHorizontal[NAVIO_TAM] = {NAVIO, NAVIO, NAVIO};
-    int navioVertical[NAVIO_TAM]   = {NAVIO, NAVIO, NAVIO};
-    int navioDiagonal1[NAVIO_TAM]  = {NAVIO, NAVIO, NAVIO};
-    int navioDiagonal2[NAVIO_TAM]  = {NAVIO, NAVIO, NAVIO};
-
-    /*
-    ========================================
-     4. COORDENADAS DOS NAVIOS
-     - Horizontal e Vertical → NÍVEL NOVATO
-     - Diagonais → NÍVEL AVENTUREIRO
-    ========================================
-    */
-
-    // --- NÍVEL AVENTUREIRO (Diagonais)
-    int d1_linha = 0, d1_coluna = 0; // Diagonal ↘
-    int d2_linha = 0, d2_coluna = 9; // Diagonal ↙
-
-    // --- NÍVEL NOVATO
-    int h_linha = 6, h_coluna = 1;   // Horizontal
-    int v_linha = 4, v_coluna = 8;   // Vertical
-
-    /*
-    ========================================
-     5. POSICIONAMENTO DE NAVIO DIAGONAL ↘
-     (NÍVEL AVENTUREIRO)
-     Linha e coluna aumentam juntas
-    ========================================
-    */
-    for (int i = 0; i < NAVIO_TAM; i++) {
-        tabuleiro[d1_linha + i][d1_coluna + i] = navioDiagonal1[i];
-    }
-
-    /*
-    ========================================
-     6. POSICIONAMENTO DE NAVIO DIAGONAL ↙
-     (NÍVEL AVENTUREIRO)
-     Linha aumenta e coluna diminui
-    ========================================
-    */
-    for (int i = 0; i < NAVIO_TAM; i++) {
-        tabuleiro[d2_linha + i][d2_coluna - i] = navioDiagonal2[i];
-    }
-
-    /*
-    ========================================
-     7. POSICIONAMENTO DE NAVIO HORIZONTAL
-     (NÍVEL NOVATO)
-     Coluna varia, linha fixa
-    ========================================
-    */
-    for (int i = 0; i < NAVIO_TAM; i++) {
-        tabuleiro[h_linha][h_coluna + i] = navioHorizontal[i];
-    }
-
-    /*
-    ========================================
-     8. POSICIONAMENTO DE NAVIO VERTICAL
-     (NÍVEL NOVATO)
-     Linha varia, coluna fixa
-    ========================================
-    */
-    for (int i = 0; i < NAVIO_TAM; i++) {
-        tabuleiro[v_linha + i][v_coluna] = navioVertical[i];
-    }
-
-    /*
-    ========================================
-     9. EXIBIÇÃO DO TABULEIRO
-     (NÍVEL NOVATO – saída visual)
-    ========================================
-    */
-    printf("\nTABULEIRO BATALHA NAVAL\n\n");
-
-    // Cabeçalho com letras A–J
-    printf("    ");
-    for (char c = 'A'; c <= 'J'; c++) {
-        printf("%c ", c);
-    }
-    printf("\n");
-
-    // Linhas numeradas de 1 a 10
-    for (int i = 0; i < TAM; i++) {
-        printf("%2d  ", i + 1);
+        printf("     %2d ", i + 1);
         for (int j = 0; j < TAM; j++) {
-            printf("%d ", tabuleiro[i][j]);
+            printf("%d ", habilidades[i][j]);
         }
         printf("\n");
     }
+
+    printf("\nLegenda:\n");
+    printf("0 = Água | 3 = Navio | 3 = Cone | 2 = Cruz | 5 = Octaedro\n");
 
     return 0;
 }
